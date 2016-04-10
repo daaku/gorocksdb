@@ -18,8 +18,8 @@ func newNativeCache(c *C.rocksdb_cache_t) *Cache {
 	return &Cache{c}
 }
 
-// Destroy deallocates the Cache object.
-func (c *Cache) Destroy() {
+// Release deallocates the Cache object.
+func (c *Cache) Release() {
 	C.rocksdb_cache_destroy(c.c)
 	c.c = nil
 }

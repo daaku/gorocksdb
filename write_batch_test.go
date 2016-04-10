@@ -20,7 +20,7 @@ func TestWriteBatch(t *testing.T) {
 
 	// create and fill the write batch
 	wb := NewWriteBatch()
-	defer wb.Destroy()
+	defer wb.Release()
 	wb.Put(givenKey1, givenVal1)
 	wb.Delete(givenKey2)
 	ensure.DeepEqual(t, wb.Count(), 2)
@@ -52,7 +52,7 @@ func TestWriteBatchIterator(t *testing.T) {
 	)
 	// create and fill the write batch
 	wb := NewWriteBatch()
-	defer wb.Destroy()
+	defer wb.Release()
 	wb.Put(givenKey1, givenVal1)
 	wb.Delete(givenKey2)
 	ensure.DeepEqual(t, wb.Count(), 2)

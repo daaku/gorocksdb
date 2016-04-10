@@ -14,7 +14,7 @@ func newNativeCF(c *C.rocksdb_column_family_handle_t) *CF {
 	return &CF{c}
 }
 
-// Destroy calls the destructor of the underlying column family handle.
-func (c *CF) Destroy() {
+// Release calls the destructor of the underlying column family handle.
+func (c *CF) Release() {
 	C.rocksdb_column_family_handle_destroy(c.c)
 }

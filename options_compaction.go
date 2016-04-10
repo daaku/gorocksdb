@@ -37,8 +37,8 @@ func (o *FIFOCompactionOptions) SetMaxTableFilesSize(value uint64) {
 	C.rocksdb_fifo_compaction_options_set_max_table_files_size(o.c, C.uint64_t(value))
 }
 
-// Destroy deallocates the FIFOCompactionOptions object.
-func (o *FIFOCompactionOptions) Destroy() {
+// Release deallocates the FIFOCompactionOptions object.
+func (o *FIFOCompactionOptions) Release() {
 	C.rocksdb_fifo_compaction_options_destroy(o.c)
 }
 
@@ -123,8 +123,8 @@ func (o *UniversalCompactionOptions) SetStopStyle(value UniversalCompactionStopS
 	C.rocksdb_universal_compaction_options_set_stop_style(o.c, C.int(value))
 }
 
-// Destroy deallocates the UniversalCompactionOptions object.
-func (o *UniversalCompactionOptions) Destroy() {
+// Release deallocates the UniversalCompactionOptions object.
+func (o *UniversalCompactionOptions) Release() {
 	C.rocksdb_universal_compaction_options_destroy(o.c)
 	o.c = nil
 }

@@ -61,7 +61,7 @@ type Options struct {
 	env  *Env
 	bbto *BlockBasedTableOptions
 
-	// We keep these so we can free their memory in Destroy.
+	// We keep these so we can free their memory in Release.
 	ccmp *C.rocksdb_comparator_t
 	cmo  *C.rocksdb_mergeoperator_t
 	cst  *C.rocksdb_slicetransform_t
@@ -1008,8 +1008,8 @@ func (o *Options) SetBlockBasedTableFactory(value *BlockBasedTableOptions) {
 	C.rocksdb_options_set_block_based_table_factory(o.c, value.c)
 }
 
-// Destroy deallocates the Options object.
-func (o *Options) Destroy() {
+// Release deallocates the Options object.
+func (o *Options) Release() {
 	C.rocksdb_options_destroy(o.c)
 	if o.ccmp != nil {
 		C.rocksdb_comparator_destroy(o.ccmp)

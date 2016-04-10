@@ -603,9 +603,9 @@ func (db *DB) Release() {
 	C.rocksdb_close(db.c)
 }
 
-// DestroyDB removes a database entirely, removing everything from the
+// ReleaseDB removes a database entirely, removing everything from the
 // filesystem.
-func DestroyDB(name string, opts *Options) error {
+func ReleaseDB(name string, opts *Options) error {
 	var (
 		cErr  *C.char
 		cName = C.CString(name)

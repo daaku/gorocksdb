@@ -91,8 +91,8 @@ func (w *WriteBatch) Clear() {
 	C.rocksdb_writebatch_clear(w.c)
 }
 
-// Destroy deallocates the WriteBatch object.
-func (w *WriteBatch) Destroy() {
+// Release deallocates the WriteBatch object.
+func (w *WriteBatch) Release() {
 	C.rocksdb_writebatch_destroy(w.c)
 	w.c = nil
 }

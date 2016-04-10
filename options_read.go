@@ -76,8 +76,8 @@ func (o *ReadOptions) SetTailing(value bool) {
 	C.rocksdb_readoptions_set_tailing(o.c, boolToChar(value))
 }
 
-// Destroy deallocates the ReadOptions object.
-func (o *ReadOptions) Destroy() {
+// Release deallocates the ReadOptions object.
+func (o *ReadOptions) Release() {
 	C.rocksdb_readoptions_destroy(o.c)
 	o.c = nil
 }

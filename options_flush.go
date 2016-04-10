@@ -25,8 +25,8 @@ func (o *FlushOptions) SetWait(value bool) {
 	C.rocksdb_flushoptions_set_wait(o.c, boolToChar(value))
 }
 
-// Destroy deallocates the FlushOptions object.
-func (o *FlushOptions) Destroy() {
+// Release deallocates the FlushOptions object.
+func (o *FlushOptions) Release() {
 	C.rocksdb_flushoptions_destroy(o.c)
 	o.c = nil
 }

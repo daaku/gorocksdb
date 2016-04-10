@@ -38,8 +38,8 @@ func (e *Env) SetHighPriorityBackgroundThreads(n int) {
 	C.rocksdb_env_set_high_priority_background_threads(e.c, C.int(n))
 }
 
-// Destroy deallocates the Env object.
-func (e *Env) Destroy() {
+// Release deallocates the Env object.
+func (e *Env) Release() {
 	C.rocksdb_env_destroy(e.c)
 	e.c = nil
 }

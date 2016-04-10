@@ -35,8 +35,8 @@ func (o *WriteOptions) DisableWAL(value bool) {
 	C.rocksdb_writeoptions_disable_WAL(o.c, C.int(btoi(value)))
 }
 
-// Destroy deallocates the WriteOptions object.
-func (o *WriteOptions) Destroy() {
+// Release deallocates the WriteOptions object.
+func (o *WriteOptions) Release() {
 	C.rocksdb_writeoptions_destroy(o.c)
 	o.c = nil
 }

@@ -19,8 +19,8 @@ func TestCFOpen(t *testing.T) {
 	ensure.Nil(t, err)
 	defer db.Release()
 	ensure.DeepEqual(t, len(cfh), 2)
-	cfh[0].Destroy()
-	cfh[1].Destroy()
+	cfh[0].Release()
+	cfh[1].Release()
 
 	actualNames, err := ListCFs(opts, dir)
 	ensure.Nil(t, err)
@@ -39,7 +39,7 @@ func TestCFCreateDrop(t *testing.T) {
 	defer db.Release()
 	cf, err := db.CreateCF(opts, "guide")
 	ensure.Nil(t, err)
-	defer cf.Destroy()
+	defer cf.Release()
 
 	actualNames, err := ListCFs(opts, dir)
 	ensure.Nil(t, err)
@@ -64,13 +64,13 @@ func TestCFBatchPutGet(t *testing.T) {
 	ensure.Nil(t, err)
 	defer db.Release()
 	ensure.DeepEqual(t, len(cfh), 2)
-	defer cfh[0].Destroy()
-	defer cfh[1].Destroy()
+	defer cfh[0].Release()
+	defer cfh[1].Release()
 
 	wo := NewDefaultWriteOptions()
-	defer wo.Destroy()
+	defer wo.Release()
 	ro := NewDefaultReadOptions()
-	defer ro.Destroy()
+	defer ro.Release()
 
 	givenKey0 := []byte("hello0")
 	givenVal0 := []byte("world0")
@@ -78,7 +78,7 @@ func TestCFBatchPutGet(t *testing.T) {
 	givenVal1 := []byte("world1")
 
 	b0 := NewWriteBatch()
-	defer b0.Destroy()
+	defer b0.Release()
 	b0.PutCF(cfh[0], givenKey0, givenVal0)
 	ensure.Nil(t, db.Write(wo, b0))
 	actualVal0, err := db.GetCF(ro, cfh[0], givenKey0)
@@ -87,7 +87,7 @@ func TestCFBatchPutGet(t *testing.T) {
 	ensure.DeepEqual(t, actualVal0.Data(), givenVal0)
 
 	b1 := NewWriteBatch()
-	defer b1.Destroy()
+	defer b1.Release()
 	b1.PutCF(cfh[1], givenKey1, givenVal1)
 	ensure.Nil(t, db.Write(wo, b1))
 	actualVal1, err := db.GetCF(ro, cfh[1], givenKey1)
@@ -115,13 +115,13 @@ func TestCFPutGetDelete(t *testing.T) {
 	ensure.Nil(t, err)
 	defer db.Release()
 	ensure.DeepEqual(t, len(cfh), 2)
-	defer cfh[0].Destroy()
-	defer cfh[1].Destroy()
+	defer cfh[0].Release()
+	defer cfh[1].Release()
 
 	wo := NewDefaultWriteOptions()
-	defer wo.Destroy()
+	defer wo.Release()
 	ro := NewDefaultReadOptions()
-	defer ro.Destroy()
+	defer ro.Release()
 
 	givenKey0 := []byte("hello0")
 	givenVal0 := []byte("world0")

@@ -12,7 +12,7 @@ type BlockBasedTableOptions struct {
 	cache     *Cache
 	compCache *Cache
 
-	// We keep these so we can free their memory in Destroy.
+	// We keep these so we can free their memory in Release.
 	cFp *C.rocksdb_filterpolicy_t
 }
 
@@ -26,8 +26,8 @@ func newNativeBlockBasedTableOptions(c *C.rocksdb_block_based_table_options_t) *
 	return &BlockBasedTableOptions{c: c}
 }
 
-// Destroy deallocates the BlockBasedTableOptions object.
-func (o *BlockBasedTableOptions) Destroy() {
+// Release deallocates the BlockBasedTableOptions object.
+func (o *BlockBasedTableOptions) Release() {
 	C.rocksdb_block_based_options_destroy(o.c)
 	o.c = nil
 	o.cache = nil

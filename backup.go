@@ -41,8 +41,8 @@ func (b *BackupEngineInfo) GetNumFiles(index int) int32 {
 	return int32(C.rocksdb_backup_engine_info_number_files(b.c, C.int(index)))
 }
 
-// Destroy destroys the backup engine info instance.
-func (b *BackupEngineInfo) Destroy() {
+// Release destroys the backup engine info instance.
+func (b *BackupEngineInfo) Release() {
 	C.rocksdb_backup_engine_info_destroy(b.c)
 	b.c = nil
 }
@@ -68,8 +68,8 @@ func (o *RestoreOptions) SetKeepLogFiles(v int) {
 	C.rocksdb_restore_options_set_keep_log_files(o.c, C.int(v))
 }
 
-// Destroy destroys this RestoreOptions instance.
-func (o *RestoreOptions) Destroy() {
+// Release destroys this RestoreOptions instance.
+func (o *RestoreOptions) Release() {
 	C.rocksdb_restore_options_destroy(o.c)
 }
 
