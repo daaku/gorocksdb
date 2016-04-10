@@ -21,11 +21,11 @@ type FIFOCompactionOptions struct {
 
 // NewDefaultFIFOCompactionOptions creates a default FIFOCompactionOptions object.
 func NewDefaultFIFOCompactionOptions() *FIFOCompactionOptions {
-	return NewNativeFIFOCompactionOptions(C.rocksdb_fifo_compaction_options_create())
+	return newNativeFIFOCompactionOptions(C.rocksdb_fifo_compaction_options_create())
 }
 
-// NewNativeFIFOCompactionOptions creates a native FIFOCompactionOptions object.
-func NewNativeFIFOCompactionOptions(c *C.rocksdb_fifo_compaction_options_t) *FIFOCompactionOptions {
+// newNativeFIFOCompactionOptions creates a native FIFOCompactionOptions object.
+func newNativeFIFOCompactionOptions(c *C.rocksdb_fifo_compaction_options_t) *FIFOCompactionOptions {
 	return &FIFOCompactionOptions{c}
 }
 
@@ -51,12 +51,12 @@ type UniversalCompactionOptions struct {
 // NewDefaultUniversalCompactionOptions creates a default UniversalCompactionOptions
 // object.
 func NewDefaultUniversalCompactionOptions() *UniversalCompactionOptions {
-	return NewNativeUniversalCompactionOptions(C.rocksdb_universal_compaction_options_create())
+	return newNativeUniversalCompactionOptions(C.rocksdb_universal_compaction_options_create())
 }
 
-// NewNativeUniversalCompactionOptions creates a UniversalCompactionOptions
+// newNativeUniversalCompactionOptions creates a UniversalCompactionOptions
 // object.
-func NewNativeUniversalCompactionOptions(c *C.rocksdb_universal_compaction_options_t) *UniversalCompactionOptions {
+func newNativeUniversalCompactionOptions(c *C.rocksdb_universal_compaction_options_t) *UniversalCompactionOptions {
 	return &UniversalCompactionOptions{c}
 }
 

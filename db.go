@@ -109,7 +109,7 @@ func OpenDbColumnFamilies(
 
 	cfHandles := make([]*ColumnFamilyHandle, numColumnFamilies)
 	for i, c := range cHandles {
-		cfHandles[i] = NewNativeColumnFamilyHandle(c)
+		cfHandles[i] = newNativeColumnFamilyHandle(c)
 	}
 
 	return &DB{
@@ -171,7 +171,7 @@ func OpenDbForReadOnlyColumnFamilies(
 
 	cfHandles := make([]*ColumnFamilyHandle, numColumnFamilies)
 	for i, c := range cHandles {
-		cfHandles[i] = NewNativeColumnFamilyHandle(c)
+		cfHandles[i] = newNativeColumnFamilyHandle(c)
 	}
 
 	return &DB{
@@ -362,14 +362,14 @@ func (db *DB) Write(opts *WriteOptions, batch *WriteBatch) error {
 // ReadOptions given.
 func (db *DB) NewIterator(opts *ReadOptions) *Iterator {
 	cIter := C.rocksdb_create_iterator(db.c, opts.c)
-	return NewNativeIterator(unsafe.Pointer(cIter))
+	return newNativeIterator(cIter)
 }
 
 // NewIteratorCF returns an Iterator over the the database and column family
 // that uses the ReadOptions given.
 func (db *DB) NewIteratorCF(opts *ReadOptions, cf *ColumnFamilyHandle) *Iterator {
 	cIter := C.rocksdb_create_iterator_cf(db.c, opts.c, cf.c)
-	return NewNativeIterator(unsafe.Pointer(cIter))
+	return newNativeIterator(cIter)
 }
 
 // NewIterators returns iterators from a consistent database state across
@@ -401,7 +401,7 @@ func (db *DB) NewIterators(
 
 	var iters []*Iterator
 	for _, iter := range cIters {
-		iters = append(iters, NewNativeIterator(unsafe.Pointer(iter)))
+		iters = append(iters, newNativeIterator(iter))
 	}
 	return iters, nil
 }
@@ -409,7 +409,7 @@ func (db *DB) NewIterators(
 // NewSnapshot creates a new snapshot of the database.
 func (db *DB) NewSnapshot() *Snapshot {
 	cSnap := C.rocksdb_create_snapshot(db.c)
-	return NewNativeSnapshot(cSnap, db.c)
+	return newNativeSnapshot(cSnap, db.c)
 }
 
 // GetProperty returns the value of a database property.
@@ -442,7 +442,7 @@ func (db *DB) CreateColumnFamily(opts *Options, name string) (*ColumnFamilyHandl
 		defer C.free(unsafe.Pointer(cErr))
 		return nil, errors.New(C.GoString(cErr))
 	}
-	return NewNativeColumnFamilyHandle(cHandle), nil
+	return newNativeColumnFamilyHandle(cHandle), nil
 }
 
 // DropColumnFamily drops a column family.

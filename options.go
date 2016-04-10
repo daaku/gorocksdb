@@ -70,11 +70,11 @@ type Options struct {
 
 // NewDefaultOptions creates the default Options.
 func NewDefaultOptions() *Options {
-	return NewNativeOptions(C.rocksdb_options_create())
+	return newNativeOptions(C.rocksdb_options_create())
 }
 
-// NewNativeOptions creates a Options object.
-func NewNativeOptions(c *C.rocksdb_options_t) *Options {
+// newNativeOptions creates a Options object.
+func newNativeOptions(c *C.rocksdb_options_t) *Options {
 	return &Options{c: c}
 }
 

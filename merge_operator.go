@@ -47,8 +47,8 @@ type MergeOperator interface {
 	Name() string
 }
 
-// NewNativeMergeOperator creates a MergeOperator object.
-func NewNativeMergeOperator(c *C.rocksdb_mergeoperator_t) MergeOperator {
+// newNativeMergeOperator creates a MergeOperator object.
+func newNativeMergeOperator(c *C.rocksdb_mergeoperator_t) MergeOperator {
 	return nativeMergeOperator{c}
 }
 

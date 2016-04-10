@@ -16,8 +16,8 @@ type Comparator interface {
 	Name() string
 }
 
-// NewNativeComparator creates a Comparator object.
-func NewNativeComparator(c *C.rocksdb_comparator_t) Comparator {
+// newNativeComparator creates a Comparator object.
+func newNativeComparator(c *C.rocksdb_comparator_t) Comparator {
 	return nativeComparator{c}
 }
 

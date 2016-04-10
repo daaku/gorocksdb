@@ -20,11 +20,11 @@ type SliceTransform interface {
 
 // NewFixedPrefixTransform creates a new fixed prefix transform.
 func NewFixedPrefixTransform(prefixLen int) SliceTransform {
-	return NewNativeSliceTransform(C.rocksdb_slicetransform_create_fixed_prefix(C.size_t(prefixLen)))
+	return newNativeSliceTransform(C.rocksdb_slicetransform_create_fixed_prefix(C.size_t(prefixLen)))
 }
 
-// NewNativeSliceTransform creates a SliceTransform object.
-func NewNativeSliceTransform(c *C.rocksdb_slicetransform_t) SliceTransform {
+// newNativeSliceTransform creates a SliceTransform object.
+func newNativeSliceTransform(c *C.rocksdb_slicetransform_t) SliceTransform {
 	return nativeSliceTransform{c}
 }
 

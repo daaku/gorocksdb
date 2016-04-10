@@ -21,8 +21,8 @@ type FilterPolicy interface {
 	Name() string
 }
 
-// NewNativeFilterPolicy creates a FilterPolicy object.
-func NewNativeFilterPolicy(c *C.rocksdb_filterpolicy_t) FilterPolicy {
+// newNativeFilterPolicy creates a FilterPolicy object.
+func newNativeFilterPolicy(c *C.rocksdb_filterpolicy_t) FilterPolicy {
 	return nativeFilterPolicy{c}
 }
 
@@ -46,7 +46,7 @@ func (fp nativeFilterPolicy) Name() string                               { retur
 // FilterPolicy (like NewBloomFilterPolicy) that does not ignore
 // trailing spaces in keys.
 func NewBloomFilter(bitsPerKey int) FilterPolicy {
-	return NewNativeFilterPolicy(C.rocksdb_filterpolicy_create_bloom(C.int(bitsPerKey)))
+	return newNativeFilterPolicy(C.rocksdb_filterpolicy_create_bloom(C.int(bitsPerKey)))
 }
 
 // Hold references to filter policies.

@@ -11,11 +11,11 @@ type FlushOptions struct {
 
 // NewDefaultFlushOptions creates a default FlushOptions object.
 func NewDefaultFlushOptions() *FlushOptions {
-	return NewNativeFlushOptions(C.rocksdb_flushoptions_create())
+	return newNativeFlushOptions(C.rocksdb_flushoptions_create())
 }
 
-// NewNativeFlushOptions creates a FlushOptions object.
-func NewNativeFlushOptions(c *C.rocksdb_flushoptions_t) *FlushOptions {
+// newNativeFlushOptions creates a FlushOptions object.
+func newNativeFlushOptions(c *C.rocksdb_flushoptions_t) *FlushOptions {
 	return &FlushOptions{c}
 }
 

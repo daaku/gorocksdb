@@ -9,8 +9,8 @@ type ColumnFamilyHandle struct {
 	c *C.rocksdb_column_family_handle_t
 }
 
-// NewNativeColumnFamilyHandle creates a ColumnFamilyHandle object.
-func NewNativeColumnFamilyHandle(c *C.rocksdb_column_family_handle_t) *ColumnFamilyHandle {
+// newNativeColumnFamilyHandle creates a ColumnFamilyHandle object.
+func newNativeColumnFamilyHandle(c *C.rocksdb_column_family_handle_t) *ColumnFamilyHandle {
 	return &ColumnFamilyHandle{c}
 }
 
