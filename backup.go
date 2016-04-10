@@ -99,11 +99,6 @@ func OpenBackupEngine(opts *Options, path string) (*BackupEngine, error) {
 	}, nil
 }
 
-// UnsafeGetBackupEngine returns the underlying c backup engine.
-func (b *BackupEngine) UnsafeGetBackupEngine() unsafe.Pointer {
-	return unsafe.Pointer(b.c)
-}
-
 // CreateNewBackup takes a new backup from db.
 func (b *BackupEngine) CreateNewBackup(db *DB) error {
 	var cErr *C.char

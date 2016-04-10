@@ -2,7 +2,6 @@ package gorocksdb
 
 // #include "rocksdb/c.h"
 import "C"
-import "unsafe"
 
 // ReadTier controls fetching of data during a read request.
 // An application can issue a read request (via Get/Iterators) and specify
@@ -34,11 +33,6 @@ func NewDefaultReadOptions() *ReadOptions {
 // NewNativeReadOptions creates a ReadOptions object.
 func NewNativeReadOptions(c *C.rocksdb_readoptions_t) *ReadOptions {
 	return &ReadOptions{c}
-}
-
-// UnsafeGetReadOptions returns the underlying c read options object.
-func (opts *ReadOptions) UnsafeGetReadOptions() unsafe.Pointer {
-	return unsafe.Pointer(opts.c)
 }
 
 // SetVerifyChecksums speciy if all data read from underlying storage will be
