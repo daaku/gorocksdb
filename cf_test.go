@@ -15,14 +15,14 @@ func TestColumnFamilyOpen(t *testing.T) {
 	opts := NewDefaultOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
-	db, cfh, err := OpenDBColumnFamilies(opts, dir, givenNames, []*Options{opts, opts})
+	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
 	ensure.Nil(t, err)
 	defer db.Close()
 	ensure.DeepEqual(t, len(cfh), 2)
 	cfh[0].Destroy()
 	cfh[1].Destroy()
 
-	actualNames, err := ListColumnFamilies(opts, dir)
+	actualNames, err := ListCFs(opts, dir)
 	ensure.Nil(t, err)
 	ensure.SameElements(t, actualNames, givenNames)
 }
@@ -41,13 +41,13 @@ func TestColumnFamilyCreateDrop(t *testing.T) {
 	ensure.Nil(t, err)
 	defer cf.Destroy()
 
-	actualNames, err := ListColumnFamilies(opts, dir)
+	actualNames, err := ListCFs(opts, dir)
 	ensure.Nil(t, err)
 	ensure.SameElements(t, actualNames, []string{"default", "guide"})
 
 	ensure.Nil(t, db.DropColumnFamily(cf))
 
-	actualNames, err = ListColumnFamilies(opts, dir)
+	actualNames, err = ListCFs(opts, dir)
 	ensure.Nil(t, err)
 	ensure.SameElements(t, actualNames, []string{"default"})
 }
@@ -60,7 +60,7 @@ func TestColumnFamilyBatchPutGet(t *testing.T) {
 	opts := NewDefaultOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
-	db, cfh, err := OpenDBColumnFamilies(opts, dir, givenNames, []*Options{opts, opts})
+	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
 	ensure.Nil(t, err)
 	defer db.Close()
 	ensure.DeepEqual(t, len(cfh), 2)
@@ -111,7 +111,7 @@ func TestColumnFamilyPutGetDelete(t *testing.T) {
 	opts := NewDefaultOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
-	db, cfh, err := OpenDBColumnFamilies(opts, dir, givenNames, []*Options{opts, opts})
+	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
 	ensure.Nil(t, err)
 	defer db.Close()
 	ensure.DeepEqual(t, len(cfh), 2)
