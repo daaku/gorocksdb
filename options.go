@@ -218,19 +218,19 @@ func (o *Options) SetInfoLogLevel(value InfoLogLevel) {
 //
 // By default, RocksDB uses only one background thread for flush and
 // compaction. Calling this function will set it up such that total of
-// `total_threads` is used. Good value for `total_threads` is the number of
+// `totalThreads` is used. Good value for `totalThreads` is the number of
 // cores. You almost definitely want to call this function if your system is
 // bottlenecked by RocksDB.
-func (o *Options) IncreaseParallelism(total_threads int) {
-	C.rocksdb_options_increase_parallelism(o.c, C.int(total_threads))
+func (o *Options) IncreaseParallelism(totalThreads int) {
+	C.rocksdb_options_increase_parallelism(o.c, C.int(totalThreads))
 }
 
 // OptimizeForPointLookup optimize the DB for point lookups.
 //
 // Use this if you don't need to keep the data sorted, i.e. you'll never use
 // an iterator, only Put() and Get() API calls
-func (o *Options) OptimizeForPointLookup(block_cache_size_mb uint64) {
-	C.rocksdb_options_optimize_for_point_lookup(o.c, C.uint64_t(block_cache_size_mb))
+func (o *Options) OptimizeForPointLookup(blockCacheSizeMB uint64) {
+	C.rocksdb_options_optimize_for_point_lookup(o.c, C.uint64_t(blockCacheSizeMB))
 }
 
 // OptimizeLevelStyleCompaction optimize the DB for leveld compaction.
@@ -247,16 +247,16 @@ func (o *Options) OptimizeForPointLookup(block_cache_size_mb uint64) {
 // https://github.com/facebook/rocksdb/wiki/Rocksdb-Architecture-Guide
 // Make sure to also call IncreaseParallelism(), which will provide the
 // biggest performance gains.
-// Note: we might use more memory than memtable_memory_budget during high
+// Note: we might use more memory than memtableMemoryBudget during high
 // write rate period
-func (o *Options) OptimizeLevelStyleCompaction(memtable_memory_budget uint64) {
-	C.rocksdb_options_optimize_level_style_compaction(o.c, C.uint64_t(memtable_memory_budget))
+func (o *Options) OptimizeLevelStyleCompaction(memtableMemoryBudget uint64) {
+	C.rocksdb_options_optimize_level_style_compaction(o.c, C.uint64_t(memtableMemoryBudget))
 }
 
 // OptimizeUniversalStyleCompaction optimize the DB for universal compaction.
 // See note on OptimizeLevelStyleCompaction.
-func (o *Options) OptimizeUniversalStyleCompaction(memtable_memory_budget uint64) {
-	C.rocksdb_options_optimize_universal_style_compaction(o.c, C.uint64_t(memtable_memory_budget))
+func (o *Options) OptimizeUniversalStyleCompaction(memtableMemoryBudget uint64) {
+	C.rocksdb_options_optimize_universal_style_compaction(o.c, C.uint64_t(memtableMemoryBudget))
 }
 
 // SetWriteBufferSize sets the amount of data to build up in memory
