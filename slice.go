@@ -11,8 +11,8 @@ type Slice struct {
 	freed bool
 }
 
-// NewSlice returns a slice with the given data.
-func NewSlice(data *C.char, size C.size_t) *Slice {
+// newSlice returns a slice with the given data.
+func newSlice(data *C.char, size C.size_t) *Slice {
 	return &Slice{data, size, false}
 }
 

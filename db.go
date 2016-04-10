@@ -221,7 +221,7 @@ func (db *DB) Get(opts *ReadOptions, key []byte) (*Slice, error) {
 		defer C.free(unsafe.Pointer(cErr))
 		return nil, errors.New(C.GoString(cErr))
 	}
-	return NewSlice(cValue, cValLen), nil
+	return newSlice(cValue, cValLen), nil
 }
 
 // GetBytes is like Get but returns a copy of the data.
@@ -255,7 +255,7 @@ func (db *DB) GetCF(opts *ReadOptions, cf *ColumnFamilyHandle, key []byte) (*Sli
 		defer C.free(unsafe.Pointer(cErr))
 		return nil, errors.New(C.GoString(cErr))
 	}
-	return NewSlice(cValue, cValLen), nil
+	return newSlice(cValue, cValLen), nil
 }
 
 // Put writes data associated with a key to the database.
