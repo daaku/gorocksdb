@@ -17,8 +17,7 @@ type Range struct {
 
 // DB is a reusable handle to a RocksDB database on disk, created by Open.
 type DB struct {
-	c    *C.rocksdb_t
-	opts *Options
+	c *C.rocksdb_t
 }
 
 // OpenDB opens a database with the specified options.
@@ -32,10 +31,7 @@ func OpenDB(opts *Options, name string) (*DB, error) {
 	if cErr != nil {
 		return nil, convertErr(cErr)
 	}
-	return &DB{
-		c:    db,
-		opts: opts,
-	}, nil
+	return &DB{c: db}, nil
 }
 
 // OpenDBForReadOnly opens a database with the specified options for readonly usage.
@@ -49,10 +45,7 @@ func OpenDBForReadOnly(opts *Options, name string, errorIfLogFileExist bool) (*D
 	if cErr != nil {
 		return nil, convertErr(cErr)
 	}
-	return &DB{
-		c:    db,
-		opts: opts,
-	}, nil
+	return &DB{c: db}, nil
 }
 
 // OpenDBCFs opens a database with the specified column families.
@@ -106,10 +99,7 @@ func OpenDBCFs(
 		cfHandles[i] = newNativeCF(c)
 	}
 
-	return &DB{
-		c:    db,
-		opts: opts,
-	}, cfHandles, nil
+	return &DB{c: db}, cfHandles, nil
 }
 
 // OpenDBForReadOnlyCFs opens a database with the specified column
@@ -166,10 +156,7 @@ func OpenDBForReadOnlyCFs(
 		cfHandles[i] = newNativeCF(c)
 	}
 
-	return &DB{
-		c:    db,
-		opts: opts,
-	}, cfHandles, nil
+	return &DB{c: db}, cfHandles, nil
 }
 
 // ListCFs lists the names of the column families in the DB.
