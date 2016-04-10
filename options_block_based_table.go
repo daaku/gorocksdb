@@ -109,3 +109,18 @@ func (opts *BlockBasedTableOptions) SetBlockCacheCompressed(cache *Cache) {
 func (opts *BlockBasedTableOptions) SetWholeKeyFiltering(value bool) {
 	C.rocksdb_block_based_options_set_whole_key_filtering(opts.c, boolToChar(value))
 }
+
+// SetCacheIndexAndFilterBlock indicates if we'd put index/filter blocks to
+// the block cache. If not specified, each "table reader" object will pre-load
+// index/filter block during table initialization.
+// Default: false
+func (opts *BlockBasedTableOptions) SetCacheIndexAndFilterBlocks(val bool) {
+	var value uint8
+	if val {
+		value = 1
+	}
+	C.rocksdb_block_based_options_set_cache_index_and_filter_blocks(
+		opts.c,
+		C.uchar(value),
+	)
+}

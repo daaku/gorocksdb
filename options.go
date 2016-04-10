@@ -119,6 +119,19 @@ func (opts *Options) SetMergeOperator(value MergeOperator) {
 	C.rocksdb_options_set_merge_operator(opts.c, opts.cmo)
 }
 
+// SetCompactionReadaheadSize sets the compaction read ahead size option.
+// If non-zero, we perform bigger reads when doing compaction. If you're
+// running RocksDB on spinning disks, you should set this to at least 2MB.
+// That way RocksDB's compaction is doing sequential instead of random reads.
+//
+// When non-zero, we also force new_table_reader_for_compaction_inputs to
+// true.
+//
+// Default: 0
+func (opts *Options) SetCompactionReadAheadSize(size int) {
+	C.rocksdb_options_compaction_readahead_size(opts.c, C.size_t(size))
+}
+
 // A single CompactionFilter instance to call into during compaction.
 // Allows an application to modify/delete a key-value during background
 // compaction.
@@ -281,6 +294,20 @@ func (opts *Options) SetMaxWriteBufferNumber(value int) {
 // Default: 1
 func (opts *Options) SetMinWriteBufferNumberToMerge(value int) {
 	C.rocksdb_options_set_min_write_buffer_number_to_merge(opts.c, C.int(value))
+}
+
+// SetDBWriteBufferSize sets the amount of data to build up in
+// memtables across all column families before writing to disk.
+//
+// This is distinct from write_buffer_size, which enforces a limit
+// for a single memtable.
+//
+// This feature is disabled by default. Specify a non-zero value
+// to enable it.
+//
+// Default: 0 (disabled)
+func (opts *Options) SetDBWriteBufferSize(value int) {
+	C.rocksdb_options_set_db_write_buffer_size(opts.c, C.size_t(value))
 }
 
 // SetMaxOpenFiles sets the number of open files that can be used by the DB.
