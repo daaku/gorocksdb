@@ -7,8 +7,8 @@ import (
 	"github.com/facebookgo/ensure"
 )
 
-func TestColumnFamilyOpen(t *testing.T) {
-	dir, err := ioutil.TempDir("", "gorocksdb-TestColumnFamilyOpen")
+func TestCFOpen(t *testing.T) {
+	dir, err := ioutil.TempDir("", "gorocksdb-TestCFOpen")
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}
@@ -27,8 +27,8 @@ func TestColumnFamilyOpen(t *testing.T) {
 	ensure.SameElements(t, actualNames, givenNames)
 }
 
-func TestColumnFamilyCreateDrop(t *testing.T) {
-	dir, err := ioutil.TempDir("", "gorocksdb-TestColumnFamilyCreate")
+func TestCFCreateDrop(t *testing.T) {
+	dir, err := ioutil.TempDir("", "gorocksdb-TestCFCreate")
 	ensure.Nil(t, err)
 
 	opts := NewDefaultOptions()
@@ -37,7 +37,7 @@ func TestColumnFamilyCreateDrop(t *testing.T) {
 	db, err := OpenDB(opts, dir)
 	ensure.Nil(t, err)
 	defer db.Close()
-	cf, err := db.CreateColumnFamily(opts, "guide")
+	cf, err := db.CreateCF(opts, "guide")
 	ensure.Nil(t, err)
 	defer cf.Destroy()
 
@@ -45,15 +45,15 @@ func TestColumnFamilyCreateDrop(t *testing.T) {
 	ensure.Nil(t, err)
 	ensure.SameElements(t, actualNames, []string{"default", "guide"})
 
-	ensure.Nil(t, db.DropColumnFamily(cf))
+	ensure.Nil(t, db.DropCF(cf))
 
 	actualNames, err = ListCFs(opts, dir)
 	ensure.Nil(t, err)
 	ensure.SameElements(t, actualNames, []string{"default"})
 }
 
-func TestColumnFamilyBatchPutGet(t *testing.T) {
-	dir, err := ioutil.TempDir("", "gorocksdb-TestColumnFamilyPutGet")
+func TestCFBatchPutGet(t *testing.T) {
+	dir, err := ioutil.TempDir("", "gorocksdb-TestCFPutGet")
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}
@@ -103,8 +103,8 @@ func TestColumnFamilyBatchPutGet(t *testing.T) {
 	ensure.DeepEqual(t, actualVal.Size(), 0)
 }
 
-func TestColumnFamilyPutGetDelete(t *testing.T) {
-	dir, err := ioutil.TempDir("", "gorocksdb-TestColumnFamilyPutGet")
+func TestCFPutGetDelete(t *testing.T) {
+	dir, err := ioutil.TempDir("", "gorocksdb-TestCFPutGet")
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}

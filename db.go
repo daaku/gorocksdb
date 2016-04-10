@@ -411,8 +411,8 @@ func (db *DB) GetPropertyCF(propName string, cf *CF) string {
 	return C.GoString(cValue)
 }
 
-// CreateColumnFamily create a new column family.
-func (db *DB) CreateColumnFamily(opts *Options, name string) (*CF, error) {
+// CreateCF create a new column family.
+func (db *DB) CreateCF(opts *Options, name string) (*CF, error) {
 	var (
 		cErr  *C.char
 		cName = C.CString(name)
@@ -426,8 +426,8 @@ func (db *DB) CreateColumnFamily(opts *Options, name string) (*CF, error) {
 	return newNativeCF(cHandle), nil
 }
 
-// DropColumnFamily drops a column family.
-func (db *DB) DropColumnFamily(c *CF) error {
+// DropCF drops a column family.
+func (db *DB) DropCF(c *CF) error {
 	var cErr *C.char
 	C.rocksdb_drop_column_family(db.c, c.c, &cErr)
 	if cErr != nil {
