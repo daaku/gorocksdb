@@ -57,7 +57,7 @@ func TestFilterPolicy(t *testing.T) {
 	// test key may match call
 	ro := NewDefaultReadOptions()
 	v1, err := db.Get(ro, givenKeys[0])
-	defer v1.Free()
+	defer v1.Release()
 	ensure.Nil(t, err)
 	ensure.True(t, keyMayMatchCalled)
 }

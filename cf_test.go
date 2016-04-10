@@ -82,7 +82,7 @@ func TestCFBatchPutGet(t *testing.T) {
 	b0.PutCF(cfh[0], givenKey0, givenVal0)
 	ensure.Nil(t, db.Write(wo, b0))
 	actualVal0, err := db.GetCF(ro, cfh[0], givenKey0)
-	defer actualVal0.Free()
+	defer actualVal0.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, actualVal0.Data(), givenVal0)
 
@@ -91,7 +91,7 @@ func TestCFBatchPutGet(t *testing.T) {
 	b1.PutCF(cfh[1], givenKey1, givenVal1)
 	ensure.Nil(t, db.Write(wo, b1))
 	actualVal1, err := db.GetCF(ro, cfh[1], givenKey1)
-	defer actualVal1.Free()
+	defer actualVal1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, actualVal1.Data(), givenVal1)
 
@@ -130,13 +130,13 @@ func TestCFPutGetDelete(t *testing.T) {
 
 	ensure.Nil(t, db.PutCF(wo, cfh[0], givenKey0, givenVal0))
 	actualVal0, err := db.GetCF(ro, cfh[0], givenKey0)
-	defer actualVal0.Free()
+	defer actualVal0.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, actualVal0.Data(), givenVal0)
 
 	ensure.Nil(t, db.PutCF(wo, cfh[1], givenKey1, givenVal1))
 	actualVal1, err := db.GetCF(ro, cfh[1], givenKey1)
-	defer actualVal1.Free()
+	defer actualVal1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, actualVal1.Data(), givenVal1)
 

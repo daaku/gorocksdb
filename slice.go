@@ -26,8 +26,8 @@ func (s *Slice) Size() int {
 	return int(s.size)
 }
 
-// Free frees the slice data.
-func (s *Slice) Free() {
+// Release frees the slice data.
+func (s *Slice) Release() {
 	if !s.freed {
 		C.free(unsafe.Pointer(s.data))
 		s.freed = true

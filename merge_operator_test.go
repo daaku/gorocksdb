@@ -35,7 +35,7 @@ func TestMergeOperator(t *testing.T) {
 
 	ro := NewDefaultReadOptions()
 	v1, err := db.Get(ro, givenKey)
-	defer v1.Free()
+	defer v1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, v1.Data(), givenMerged)
 }

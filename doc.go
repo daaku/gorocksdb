@@ -17,7 +17,7 @@ and query the database.
 	err = db.Put(wo, []byte("foo"), []byte("bar"))
 	...
 	value, err := db.Get(ro, []byte("foo"))
-	defer value.Free()
+	defer value.Release()
 	...
 	err = db.Delete(wo, []byte("foo"))
 
@@ -34,8 +34,8 @@ ReadOptions you use when creating the Iterator.
 		key := it.Key()
 		value := it.Value()
 		fmt.Printf("Key: %v Value: %v\n", key.Data(), value.Data())
-		key.Free()
-		value.Free()
+		key.Release()
+		value.Release()
 	}
 	if err := it.Err(); err != nil {
 		...

@@ -41,7 +41,7 @@ func TestCompactionFilter(t *testing.T) {
 	// ensure that the value is changed after compaction
 	ro := NewDefaultReadOptions()
 	v1, err := db.Get(ro, changeKey)
-	defer v1.Free()
+	defer v1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, v1.Data(), changeValNew)
 

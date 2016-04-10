@@ -29,14 +29,14 @@ func TestDBCRUD(t *testing.T) {
 
 	// retrieve
 	v1, err := db.Get(ro, givenKey)
-	defer v1.Free()
+	defer v1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, v1.Data(), givenVal1)
 
 	// update
 	ensure.Nil(t, db.Put(wo, givenKey, givenVal2))
 	v2, err := db.Get(ro, givenKey)
-	defer v2.Free()
+	defer v2.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, v2.Data(), givenVal2)
 

@@ -31,12 +31,12 @@ func TestWriteBatch(t *testing.T) {
 	// check changes
 	ro := NewDefaultReadOptions()
 	v1, err := db.Get(ro, givenKey1)
-	defer v1.Free()
+	defer v1.Release()
 	ensure.Nil(t, err)
 	ensure.DeepEqual(t, v1.Data(), givenVal1)
 
 	v2, err := db.Get(ro, givenKey2)
-	defer v2.Free()
+	defer v2.Release()
 	ensure.Nil(t, err)
 	ensure.True(t, v2.Data() == nil)
 }
