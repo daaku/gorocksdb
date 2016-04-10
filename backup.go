@@ -144,6 +144,17 @@ func (b *BackupEngine) RestoreDBFromLatestBackup(dbDir, walDir string, ro *Resto
 	return nil
 }
 
+// PurgeOldBackups purges all but the last num backups.
+func (b *BackupEngine) PurgeOldBackups(num uint) error {
+	var cErr *C.char
+	C.rocksdb_backup_engine_purge_old_backups(b.c, C.uint32_t(num), &cErr)
+	if cErr != nil {
+		defer C.free(unsafe.Pointer(cErr))
+		return errors.New(C.GoString(cErr))
+	}
+	return nil
+}
+
 // Close close the backup engine and cleans up state
 // The backups already taken remain on storage.
 func (b *BackupEngine) Close() {
