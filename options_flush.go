@@ -9,8 +9,8 @@ type FlushOptions struct {
 	c *C.rocksdb_flushoptions_t
 }
 
-// NewDefaultFlushOptions creates a default FlushOptions object.
-func NewDefaultFlushOptions() *FlushOptions {
+// NewFlushOptions creates a default FlushOptions object.
+func NewFlushOptions() *FlushOptions {
 	return newNativeFlushOptions(C.rocksdb_flushoptions_create())
 }
 

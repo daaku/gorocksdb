@@ -9,8 +9,8 @@ type WriteOptions struct {
 	c *C.rocksdb_writeoptions_t
 }
 
-// NewDefaultWriteOptions creates a default WriteOptions object.
-func NewDefaultWriteOptions() *WriteOptions {
+// NewWriteOptions creates a default WriteOptions object.
+func NewWriteOptions() *WriteOptions {
 	return newNativeWriteOptions(C.rocksdb_writeoptions_create())
 }
 

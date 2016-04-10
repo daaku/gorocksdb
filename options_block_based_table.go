@@ -16,8 +16,8 @@ type BlockBasedTableOptions struct {
 	cFp *C.rocksdb_filterpolicy_t
 }
 
-// NewDefaultBlockBasedTableOptions creates a default BlockBasedTableOptions object.
-func NewDefaultBlockBasedTableOptions() *BlockBasedTableOptions {
+// NewBlockBasedTableOptions creates a default BlockBasedTableOptions object.
+func NewBlockBasedTableOptions() *BlockBasedTableOptions {
 	return newNativeBlockBasedTableOptions(C.rocksdb_block_based_options_create())
 }
 

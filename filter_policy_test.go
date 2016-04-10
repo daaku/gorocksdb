@@ -38,24 +38,24 @@ func TestFilterPolicy(t *testing.T) {
 	}
 
 	db := newTestDB(t, "TestFilterPolicy", func(opts *Options) {
-		blockOpts := NewDefaultBlockBasedTableOptions()
+		blockOpts := NewBlockBasedTableOptions()
 		blockOpts.SetFilterPolicy(policy)
 		opts.SetBlockBasedTableFactory(blockOpts)
 	})
 	defer db.Release()
 
 	// insert keys
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	for _, k := range givenKeys {
 		ensure.Nil(t, db.Put(wo, k, []byte("val")))
 	}
 
 	// flush to trigger the filter creation
-	ensure.Nil(t, db.Flush(NewDefaultFlushOptions()))
+	ensure.Nil(t, db.Flush(NewFlushOptions()))
 	ensure.True(t, createFilterCalled)
 
 	// test key may match call
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	v1, err := db.Get(ro, givenKeys[0])
 	defer v1.Release()
 	ensure.Nil(t, err)

@@ -19,8 +19,8 @@ type FIFOCompactionOptions struct {
 	c *C.rocksdb_fifo_compaction_options_t
 }
 
-// NewDefaultFIFOCompactionOptions creates a default FIFOCompactionOptions object.
-func NewDefaultFIFOCompactionOptions() *FIFOCompactionOptions {
+// NewFIFOCompactionOptions creates a default FIFOCompactionOptions object.
+func NewFIFOCompactionOptions() *FIFOCompactionOptions {
 	return newNativeFIFOCompactionOptions(C.rocksdb_fifo_compaction_options_create())
 }
 
@@ -48,9 +48,9 @@ type UniversalCompactionOptions struct {
 	c *C.rocksdb_universal_compaction_options_t
 }
 
-// NewDefaultUniversalCompactionOptions creates a default UniversalCompactionOptions
+// NewUniversalCompactionOptions creates a default UniversalCompactionOptions
 // object.
-func NewDefaultUniversalCompactionOptions() *UniversalCompactionOptions {
+func NewUniversalCompactionOptions() *UniversalCompactionOptions {
 	return newNativeUniversalCompactionOptions(C.rocksdb_universal_compaction_options_create())
 }
 

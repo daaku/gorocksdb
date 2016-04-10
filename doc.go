@@ -3,7 +3,7 @@ Package gorocksdb provides the ability to create and access RocksDB databases.
 
 gorocksdb.OpenDB opens and creates databases.
 
-	opts := gorocksdb.NewDefaultOptions()
+	opts := gorocksdb.NewOptions()
 	opts.SetBlockCache(gorocksdb.NewLRUCache(3<<30))
 	opts.SetCreateIfMissing(true)
 	db, err := gorocksdb.OpenDB(opts, "/path/to/db")
@@ -11,8 +11,8 @@ gorocksdb.OpenDB opens and creates databases.
 The DB struct returned by OpenDB provides DB.Get, DB.Put, DB.Merge and DB.Delete to modify
 and query the database.
 
-	ro := gorocksdb.NewDefaultReadOptions()
-	wo := gorocksdb.NewDefaultWriteOptions()
+	ro := gorocksdb.NewReadOptions()
+	wo := gorocksdb.NewWriteOptions()
 	// if ro and wo are not used again, be sure to Release them.
 	err = db.Put(wo, []byte("foo"), []byte("bar"))
 	...
@@ -25,7 +25,7 @@ For bulk reads, use an Iterator. If you want to avoid disturbing your live
 traffic while doing the bulk read, be sure to call SetFillCache(false) on the
 ReadOptions you use when creating the Iterator.
 
-	ro := gorocksdb.NewDefaultReadOptions()
+	ro := gorocksdb.NewReadOptions()
 	ro.SetFillCache(false)
 	it := db.NewIterator(ro)
 	defer it.Release()

@@ -12,12 +12,12 @@ func TestSliceTransform(t *testing.T) {
 	})
 	defer db.Release()
 
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	ensure.Nil(t, db.Put(wo, []byte("foo1"), []byte("foo")))
 	ensure.Nil(t, db.Put(wo, []byte("foo2"), []byte("foo")))
 	ensure.Nil(t, db.Put(wo, []byte("bar1"), []byte("bar")))
 
-	iter := db.NewIterator(NewDefaultReadOptions())
+	iter := db.NewIterator(NewReadOptions())
 	defer iter.Release()
 	prefix := []byte("foo")
 	numFound := 0

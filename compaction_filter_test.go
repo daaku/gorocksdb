@@ -31,7 +31,7 @@ func TestCompactionFilter(t *testing.T) {
 	defer db.Release()
 
 	// insert the test keys
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	ensure.Nil(t, db.Put(wo, changeKey, changeValOld))
 	ensure.Nil(t, db.Put(wo, deleteKey, changeValNew))
 
@@ -39,7 +39,7 @@ func TestCompactionFilter(t *testing.T) {
 	db.CompactRange(Range{nil, nil})
 
 	// ensure that the value is changed after compaction
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	v1, err := db.Get(ro, changeKey)
 	defer v1.Release()
 	ensure.Nil(t, err)

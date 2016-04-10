@@ -25,8 +25,8 @@ type ReadOptions struct {
 	c *C.rocksdb_readoptions_t
 }
 
-// NewDefaultReadOptions creates a default ReadOptions object.
-func NewDefaultReadOptions() *ReadOptions {
+// NewReadOptions creates a default ReadOptions object.
+func NewReadOptions() *ReadOptions {
 	return newNativeReadOptions(C.rocksdb_readoptions_create())
 }
 

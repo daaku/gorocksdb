@@ -8,8 +8,8 @@ type Env struct {
 	c *C.rocksdb_env_t
 }
 
-// NewDefaultEnv creates a default environment.
-func NewDefaultEnv() *Env {
+// NewEnv creates a default environment.
+func NewEnv() *Env {
 	return newNativeEnv(C.rocksdb_create_default_env())
 }
 

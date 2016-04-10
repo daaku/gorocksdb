@@ -15,13 +15,13 @@ func TestComparator(t *testing.T) {
 
 	// insert keys
 	givenKeys := [][]byte{[]byte("key1"), []byte("key2"), []byte("key3")}
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	for _, k := range givenKeys {
 		ensure.Nil(t, db.Put(wo, k, []byte("val")))
 	}
 
 	// create a iterator to collect the keys
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	iter := db.NewIterator(ro)
 	defer iter.Release()
 

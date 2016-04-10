@@ -15,7 +15,7 @@ func TestWriteBatch(t *testing.T) {
 		givenVal1 = []byte("val1")
 		givenKey2 = []byte("key2")
 	)
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	ensure.Nil(t, db.Put(wo, givenKey2, []byte("foo")))
 
 	// create and fill the write batch
@@ -29,7 +29,7 @@ func TestWriteBatch(t *testing.T) {
 	ensure.Nil(t, db.Write(wo, wb))
 
 	// check changes
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	v1, err := db.Get(ro, givenKey1)
 	defer v1.Release()
 	ensure.Nil(t, err)

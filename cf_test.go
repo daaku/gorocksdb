@@ -12,7 +12,7 @@ func TestCFOpen(t *testing.T) {
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}
-	opts := NewDefaultOptions()
+	opts := NewOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
 	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
@@ -31,7 +31,7 @@ func TestCFCreateDrop(t *testing.T) {
 	dir, err := ioutil.TempDir("", "gorocksdb-TestCFCreate")
 	ensure.Nil(t, err)
 
-	opts := NewDefaultOptions()
+	opts := NewOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
 	db, err := OpenDB(opts, dir)
@@ -57,7 +57,7 @@ func TestCFBatchPutGet(t *testing.T) {
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}
-	opts := NewDefaultOptions()
+	opts := NewOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
 	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
@@ -67,9 +67,9 @@ func TestCFBatchPutGet(t *testing.T) {
 	defer cfh[0].Release()
 	defer cfh[1].Release()
 
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	defer wo.Release()
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	defer ro.Release()
 
 	givenKey0 := []byte("hello0")
@@ -108,7 +108,7 @@ func TestCFPutGetDelete(t *testing.T) {
 	ensure.Nil(t, err)
 
 	givenNames := []string{"default", "guide"}
-	opts := NewDefaultOptions()
+	opts := NewOptions()
 	opts.SetCreateIfMissingColumnFamilies(true)
 	opts.SetCreateIfMissing(true)
 	db, cfh, err := OpenDBCFs(opts, dir, givenNames, []*Options{opts, opts})
@@ -118,9 +118,9 @@ func TestCFPutGetDelete(t *testing.T) {
 	defer cfh[0].Release()
 	defer cfh[1].Release()
 
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	defer wo.Release()
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	defer ro.Release()
 
 	givenKey0 := []byte("hello0")

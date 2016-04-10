@@ -68,8 +68,8 @@ type Options struct {
 	ccf  *C.rocksdb_compactionfilter_t
 }
 
-// NewDefaultOptions creates the default Options.
-func NewDefaultOptions() *Options {
+// NewOptions creates the default Options.
+func NewOptions() *Options {
 	return newNativeOptions(C.rocksdb_options_create())
 }
 

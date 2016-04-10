@@ -20,8 +20,8 @@ func TestDBCRUD(t *testing.T) {
 		givenKey  = []byte("hello")
 		givenVal1 = []byte("world1")
 		givenVal2 = []byte("world2")
-		wo        = NewDefaultWriteOptions()
-		ro        = NewDefaultReadOptions()
+		wo        = NewWriteOptions()
+		ro        = NewReadOptions()
 	)
 
 	// create
@@ -51,7 +51,7 @@ func newTestDB(t *testing.T, name string, applyOpts func(opts *Options)) *DB {
 	dir, err := ioutil.TempDir("", "gorocksdb-"+name)
 	ensure.Nil(t, err)
 
-	opts := NewDefaultOptions()
+	opts := NewOptions()
 	opts.SetCreateIfMissing(true)
 	if applyOpts != nil {
 		applyOpts(opts)

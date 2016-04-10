@@ -12,12 +12,12 @@ func TestIterator(t *testing.T) {
 
 	// insert keys
 	givenKeys := [][]byte{[]byte("key1"), []byte("key2"), []byte("key3")}
-	wo := NewDefaultWriteOptions()
+	wo := NewWriteOptions()
 	for _, k := range givenKeys {
 		ensure.Nil(t, db.Put(wo, k, []byte("val")))
 	}
 
-	ro := NewDefaultReadOptions()
+	ro := NewReadOptions()
 	iter := db.NewIterator(ro)
 	defer iter.Release()
 	var actualKeys [][]byte
