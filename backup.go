@@ -34,8 +34,8 @@ func (b *BackupEngineInfo) GetSize(index int) int64 {
 }
 
 // GetNumFiles gets the number of files in the backup index.
-func (b *BackupEngineInfo) GetNumFiles(index int) int32 {
-	return int32(C.rocksdb_backup_engine_info_number_files(b.c, C.int(index)))
+func (b *BackupEngineInfo) GetNumFiles(index int) uint32 {
+	return uint32(C.rocksdb_backup_engine_info_number_files(b.c, C.int(index)))
 }
 
 // Release destroys the backup engine info instance.
@@ -126,7 +126,7 @@ func (b *BackupEngine) RestoreDBFromLatestBackup(dbDir, walDir string, ro *Resto
 }
 
 // PurgeOldBackups purges all but the last num backups.
-func (b *BackupEngine) PurgeOldBackups(num uint) error {
+func (b *BackupEngine) PurgeOldBackups(num uint32) error {
 	var cErr *C.char
 	C.rocksdb_backup_engine_purge_old_backups(b.c, C.uint32_t(num), &cErr)
 	return convertErr(cErr)
