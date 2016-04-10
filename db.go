@@ -377,6 +377,40 @@ func (db *DB) NewIteratorCF(opts *ReadOptions, cf *ColumnFamilyHandle) *Iterator
 	return NewNativeIterator(unsafe.Pointer(cIter))
 }
 
+// NewIterators returns iterators from a consistent database state across
+// multiple column families.
+func (db *DB) NewIterators(
+	opts *ReadOptions,
+	cfs []*ColumnFamilyHandle,
+) ([]*Iterator, error) {
+	size := len(cfs)
+	cCF := make([]*C.rocksdb_column_family_handle_t, size)
+	for i, cfHandle := range cfs {
+		cCF[i] = cfHandle.c
+	}
+
+	cIters := make([]*C.rocksdb_iterator_t, size)
+	var cErr *C.char
+	C.rocksdb_create_iterators(
+		db.c,
+		opts.c,
+		&cCF[0],
+		&cIters[0],
+		C.size_t(size),
+		&cErr,
+	)
+	if cErr != nil {
+		defer C.free(unsafe.Pointer(cErr))
+		return nil, errors.New(C.GoString(cErr))
+	}
+
+	var iters []*Iterator
+	for _, iter := range cIters {
+		iters = append(iters, NewNativeIterator(unsafe.Pointer(iter)))
+	}
+	return iters, nil
+}
+
 // NewSnapshot creates a new snapshot of the database.
 func (db *DB) NewSnapshot() *Snapshot {
 	cSnap := C.rocksdb_create_snapshot(db.c)
