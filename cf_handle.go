@@ -15,6 +15,6 @@ func newNativeCF(c *C.rocksdb_column_family_handle_t) *CF {
 }
 
 // Destroy calls the destructor of the underlying column family handle.
-func (h *CF) Destroy() {
-	C.rocksdb_column_family_handle_destroy(h.c)
+func (c *CF) Destroy() {
+	C.rocksdb_column_family_handle_destroy(c.c)
 }
