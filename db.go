@@ -22,11 +22,9 @@ type DB struct {
 
 // OpenDB opens a database with the specified options.
 func OpenDB(opts *Options, name string) (*DB, error) {
-	var (
-		cErr  *C.char
-		cName = C.CString(name)
-	)
+	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
+	var cErr *C.char
 	db := C.rocksdb_open(opts.c, cName, &cErr)
 	if cErr != nil {
 		return nil, convertErr(cErr)
@@ -36,11 +34,9 @@ func OpenDB(opts *Options, name string) (*DB, error) {
 
 // OpenDBForReadOnly opens a database with the specified options for readonly usage.
 func OpenDBForReadOnly(opts *Options, name string, errorIfLogFileExist bool) (*DB, error) {
-	var (
-		cErr  *C.char
-		cName = C.CString(name)
-	)
+	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
+	var cErr *C.char
 	db := C.rocksdb_open_for_read_only(opts.c, cName, boolToChar(errorIfLogFileExist), &cErr)
 	if cErr != nil {
 		return nil, convertErr(cErr)
@@ -161,12 +157,10 @@ func OpenDBForReadOnlyCFs(
 
 // ListCFs lists the names of the column families in the DB.
 func ListCFs(opts *Options, name string) ([]string, error) {
-	var (
-		cErr  *C.char
-		cLen  C.size_t
-		cName = C.CString(name)
-	)
+	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
+	var cLen C.size_t
+	var cErr *C.char
 	cNames := C.rocksdb_list_column_families(opts.c, cName, &cLen, &cErr)
 	if cErr != nil {
 		return nil, convertErr(cErr)
@@ -183,12 +177,10 @@ func ListCFs(opts *Options, name string) ([]string, error) {
 
 // Get returns the data associated with the key from the database.
 func (db *DB) Get(opts *ReadOptions, key []byte) (*Slice, error) {
-	var (
-		cErr    *C.char
-		cValLen C.size_t
-		cKey    = byteToChar(key)
-	)
-	cValue := C.rocksdb_get(db.c, opts.c, cKey, C.size_t(len(key)), &cValLen, &cErr)
+	var cValLen C.size_t
+	var cErr *C.char
+	cValue := C.rocksdb_get(
+		db.c, opts.c, byteToChar(key), C.size_t(len(key)), &cValLen, &cErr)
 	if cErr != nil {
 		return nil, convertErr(cErr)
 	}
@@ -297,10 +289,7 @@ func (db *DB) NewIteratorCF(opts *ReadOptions, cf *CF) *Iterator {
 
 // NewIterators returns iterators from a consistent database state across
 // multiple column families.
-func (db *DB) NewIterators(
-	opts *ReadOptions,
-	cfs []*CF,
-) ([]*Iterator, error) {
+func (db *DB) NewIterators(opts *ReadOptions, cfs []*CF) ([]*Iterator, error) {
 	size := len(cfs)
 	cCF := make([]*C.rocksdb_column_family_handle_t, size)
 	for i, cfHandle := range cfs {
