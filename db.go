@@ -66,7 +66,7 @@ func OpenDBColumnFamilies(
 	name string,
 	cfNames []string,
 	cfOpts []*Options,
-) (*DB, []*ColumnFamilyHandle, error) {
+) (*DB, []*CF, error) {
 	numColumnFamilies := len(cfNames)
 	if numColumnFamilies != len(cfOpts) {
 		return nil, nil, errors.New("must provide the same number of column family names and options")
@@ -107,9 +107,9 @@ func OpenDBColumnFamilies(
 		return nil, nil, errors.New(C.GoString(cErr))
 	}
 
-	cfHandles := make([]*ColumnFamilyHandle, numColumnFamilies)
+	cfHandles := make([]*CF, numColumnFamilies)
 	for i, c := range cHandles {
-		cfHandles[i] = newNativeColumnFamilyHandle(c)
+		cfHandles[i] = newNativeCF(c)
 	}
 
 	return &DB{
@@ -127,7 +127,7 @@ func OpenDBForReadOnlyColumnFamilies(
 	cfNames []string,
 	cfOpts []*Options,
 	errorIfLogFileExist bool,
-) (*DB, []*ColumnFamilyHandle, error) {
+) (*DB, []*CF, error) {
 	numColumnFamilies := len(cfNames)
 	if numColumnFamilies != len(cfOpts) {
 		return nil, nil, errors.New("must provide the same number of column family names and options")
@@ -169,9 +169,9 @@ func OpenDBForReadOnlyColumnFamilies(
 		return nil, nil, errors.New(C.GoString(cErr))
 	}
 
-	cfHandles := make([]*ColumnFamilyHandle, numColumnFamilies)
+	cfHandles := make([]*CF, numColumnFamilies)
 	for i, c := range cHandles {
-		cfHandles[i] = newNativeColumnFamilyHandle(c)
+		cfHandles[i] = newNativeCF(c)
 	}
 
 	return &DB{
@@ -225,7 +225,7 @@ func (db *DB) Get(opts *ReadOptions, key []byte) (*Slice, error) {
 }
 
 // GetCF returns the data associated with the key from the database and column family.
-func (db *DB) GetCF(opts *ReadOptions, cf *ColumnFamilyHandle, key []byte) (*Slice, error) {
+func (db *DB) GetCF(opts *ReadOptions, cf *CF, key []byte) (*Slice, error) {
 	var (
 		cErr    *C.char
 		cValLen C.size_t
@@ -255,7 +255,7 @@ func (db *DB) Put(opts *WriteOptions, key, value []byte) error {
 }
 
 // PutCF writes data associated with a key to the database and column family.
-func (db *DB) PutCF(opts *WriteOptions, cf *ColumnFamilyHandle, key, value []byte) error {
+func (db *DB) PutCF(opts *WriteOptions, cf *CF, key, value []byte) error {
 	var (
 		cErr   *C.char
 		cKey   = byteToChar(key)
@@ -284,7 +284,7 @@ func (db *DB) Delete(opts *WriteOptions, key []byte) error {
 }
 
 // DeleteCF removes the data associated with the key from the database and column family.
-func (db *DB) DeleteCF(opts *WriteOptions, cf *ColumnFamilyHandle, key []byte) error {
+func (db *DB) DeleteCF(opts *WriteOptions, cf *CF, key []byte) error {
 	var (
 		cErr *C.char
 		cKey = byteToChar(key)
@@ -314,7 +314,7 @@ func (db *DB) Merge(opts *WriteOptions, key []byte, value []byte) error {
 
 // MergeCF merges the data associated with the key with the actual data in the
 // database and column family.
-func (db *DB) MergeCF(opts *WriteOptions, cf *ColumnFamilyHandle, key []byte, value []byte) error {
+func (db *DB) MergeCF(opts *WriteOptions, cf *CF, key []byte, value []byte) error {
 	var (
 		cErr   *C.char
 		cKey   = byteToChar(key)
@@ -348,7 +348,7 @@ func (db *DB) NewIterator(opts *ReadOptions) *Iterator {
 
 // NewIteratorCF returns an Iterator over the the database and column family
 // that uses the ReadOptions given.
-func (db *DB) NewIteratorCF(opts *ReadOptions, cf *ColumnFamilyHandle) *Iterator {
+func (db *DB) NewIteratorCF(opts *ReadOptions, cf *CF) *Iterator {
 	cIter := C.rocksdb_create_iterator_cf(db.c, opts.c, cf.c)
 	return newNativeIterator(cIter)
 }
@@ -357,7 +357,7 @@ func (db *DB) NewIteratorCF(opts *ReadOptions, cf *ColumnFamilyHandle) *Iterator
 // multiple column families.
 func (db *DB) NewIterators(
 	opts *ReadOptions,
-	cfs []*ColumnFamilyHandle,
+	cfs []*CF,
 ) ([]*Iterator, error) {
 	size := len(cfs)
 	cCF := make([]*C.rocksdb_column_family_handle_t, size)
@@ -403,7 +403,7 @@ func (db *DB) GetProperty(propName string) string {
 }
 
 // GetPropertyCF returns the value of a database property.
-func (db *DB) GetPropertyCF(propName string, cf *ColumnFamilyHandle) string {
+func (db *DB) GetPropertyCF(propName string, cf *CF) string {
 	cProp := C.CString(propName)
 	defer C.free(unsafe.Pointer(cProp))
 	cValue := C.rocksdb_property_value_cf(db.c, cf.c, cProp)
@@ -412,7 +412,7 @@ func (db *DB) GetPropertyCF(propName string, cf *ColumnFamilyHandle) string {
 }
 
 // CreateColumnFamily create a new column family.
-func (db *DB) CreateColumnFamily(opts *Options, name string) (*ColumnFamilyHandle, error) {
+func (db *DB) CreateColumnFamily(opts *Options, name string) (*CF, error) {
 	var (
 		cErr  *C.char
 		cName = C.CString(name)
@@ -423,11 +423,11 @@ func (db *DB) CreateColumnFamily(opts *Options, name string) (*ColumnFamilyHandl
 		defer C.free(unsafe.Pointer(cErr))
 		return nil, errors.New(C.GoString(cErr))
 	}
-	return newNativeColumnFamilyHandle(cHandle), nil
+	return newNativeCF(cHandle), nil
 }
 
 // DropColumnFamily drops a column family.
-func (db *DB) DropColumnFamily(c *ColumnFamilyHandle) error {
+func (db *DB) DropColumnFamily(c *CF) error {
 	var cErr *C.char
 	C.rocksdb_drop_column_family(db.c, c.c, &cErr)
 	if cErr != nil {
@@ -476,7 +476,7 @@ func (db *DB) GetApproximateSizes(ranges []Range) []uint64 {
 //
 // The keys counted will begin at Range.Start and end on the key before
 // Range.Limit.
-func (db *DB) GetApproximateSizesCF(cf *ColumnFamilyHandle, ranges []Range) []uint64 {
+func (db *DB) GetApproximateSizesCF(cf *CF, ranges []Range) []uint64 {
 	sizes := make([]uint64, len(ranges))
 	if len(ranges) == 0 {
 		return sizes
@@ -550,7 +550,7 @@ func (db *DB) CompactRange(r Range) {
 
 // CompactRangeCF runs a manual compaction on the Range of keys given on the
 // given column family. This is not likely to be needed for typical usage.
-func (db *DB) CompactRangeCF(cf *ColumnFamilyHandle, r Range) {
+func (db *DB) CompactRangeCF(cf *CF, r Range) {
 	cStart := byteToChar(r.Start)
 	cLimit := byteToChar(r.Limit)
 	C.rocksdb_compact_range_cf(db.c, cf.c, cStart, C.size_t(len(r.Start)), cLimit, C.size_t(len(r.Limit)))

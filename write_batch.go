@@ -32,7 +32,7 @@ func (w *WriteBatch) Put(key, value []byte) {
 }
 
 // PutCF queues a key-value pair in a column family.
-func (w *WriteBatch) PutCF(cf *ColumnFamilyHandle, key, value []byte) {
+func (w *WriteBatch) PutCF(cf *CF, key, value []byte) {
 	cKey := byteToChar(key)
 	cValue := byteToChar(value)
 	C.rocksdb_writebatch_put_cf(w.c, cf.c, cKey, C.size_t(len(key)), cValue, C.size_t(len(value)))
@@ -47,7 +47,7 @@ func (w *WriteBatch) Merge(key, value []byte) {
 
 // MergeCF queues a merge of "value" with the existing value of "key" in a
 // column family.
-func (w *WriteBatch) MergeCF(cf *ColumnFamilyHandle, key, value []byte) {
+func (w *WriteBatch) MergeCF(cf *CF, key, value []byte) {
 	cKey := byteToChar(key)
 	cValue := byteToChar(value)
 	C.rocksdb_writebatch_merge_cf(w.c, cf.c, cKey, C.size_t(len(key)), cValue, C.size_t(len(value)))
@@ -60,7 +60,7 @@ func (w *WriteBatch) Delete(key []byte) {
 }
 
 // DeleteCF queues a deletion of the data at key in a column family.
-func (w *WriteBatch) DeleteCF(cf *ColumnFamilyHandle, key []byte) {
+func (w *WriteBatch) DeleteCF(cf *CF, key []byte) {
 	cKey := byteToChar(key)
 	C.rocksdb_writebatch_delete_cf(w.c, cf.c, cKey, C.size_t(len(key)))
 }
