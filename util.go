@@ -1,7 +1,9 @@
 package gorocksdb
 
+// #include <stdlib.h>
 import "C"
 import (
+	"errors"
 	"reflect"
 	"unsafe"
 )
@@ -71,4 +73,14 @@ func sizeSlice(data *C.size_t, len C.int) []C.size_t {
 	sH := (*reflect.SliceHeader)(unsafe.Pointer(&value))
 	sH.Cap, sH.Len, sH.Data = int(len), int(len), uintptr(unsafe.Pointer(data))
 	return value
+}
+
+// convertErr converts a cErr to a go error if it not nil. It also frees this
+// memory for you.
+func convertErr(cErr *C.char) error {
+	if cErr != nil {
+		defer C.free(unsafe.Pointer(cErr))
+		return errors.New(C.GoString(cErr))
+	}
+	return nil
 }

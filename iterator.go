@@ -3,11 +3,7 @@ package gorocksdb
 // #include <stdlib.h>
 // #include "rocksdb/c.h"
 import "C"
-import (
-	"bytes"
-	"errors"
-	"unsafe"
-)
+import "bytes"
 
 // Iterator provides a way to seek to specific keys and iterate through
 // the keyspace from that point, as well as access the values of those keys.
@@ -98,11 +94,7 @@ func (i *Iterator) Seek(key []byte) {
 func (i *Iterator) Err() error {
 	var cErr *C.char
 	C.rocksdb_iter_get_error(i.c, &cErr)
-	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return errors.New(C.GoString(cErr))
-	}
-	return nil
+	return convertErr(cErr)
 }
 
 // Release closes the iterator.

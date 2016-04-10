@@ -3,10 +3,7 @@ package gorocksdb
 // #include <stdlib.h>
 // #include "rocksdb/c.h"
 import "C"
-import (
-	"errors"
-	"unsafe"
-)
+import "unsafe"
 
 // BackupEngineInfo represents the information about the backups
 // in a backup engine instance. Use this to get the state of the
@@ -89,8 +86,7 @@ func OpenBackupEngine(opts *Options, path string) (*BackupEngine, error) {
 
 	be := C.rocksdb_backup_engine_open(opts.c, cpath, &cErr)
 	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return nil, errors.New(C.GoString(cErr))
+		return nil, convertErr(cErr)
 	}
 	return &BackupEngine{
 		c:    be,
@@ -102,14 +98,8 @@ func OpenBackupEngine(opts *Options, path string) (*BackupEngine, error) {
 // CreateNewBackup takes a new backup from db.
 func (b *BackupEngine) CreateNewBackup(db *DB) error {
 	var cErr *C.char
-
 	C.rocksdb_backup_engine_create_new_backup(b.c, db.c, &cErr)
-	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return errors.New(C.GoString(cErr))
-	}
-
-	return nil
+	return convertErr(cErr)
 }
 
 // GetInfo gets an object that gives information about
@@ -132,22 +122,14 @@ func (b *BackupEngine) RestoreDBFromLatestBackup(dbDir, walDir string, ro *Resto
 	}()
 
 	C.rocksdb_backup_engine_restore_db_from_latest_backup(b.c, cDBDir, cWalDir, ro.c, &cErr)
-	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return errors.New(C.GoString(cErr))
-	}
-	return nil
+	return convertErr(cErr)
 }
 
 // PurgeOldBackups purges all but the last num backups.
 func (b *BackupEngine) PurgeOldBackups(num uint) error {
 	var cErr *C.char
 	C.rocksdb_backup_engine_purge_old_backups(b.c, C.uint32_t(num), &cErr)
-	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return errors.New(C.GoString(cErr))
-	}
-	return nil
+	return convertErr(cErr)
 }
 
 // Release close the backup engine and cleans up state
