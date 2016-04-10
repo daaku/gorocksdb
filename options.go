@@ -530,14 +530,14 @@ func (opts *Options) SetUseFsync(value bool) {
 	C.rocksdb_options_set_use_fsync(opts.c, C.int(btoi(value)))
 }
 
-// SetDbLogDir specifies the absolute info LOG dir.
+// SetDBLogDir specifies the absolute info LOG dir.
 //
 // If it is empty, the log files will be in the same dir as data.
 // If it is non empty, the log files will be in the specified dir,
 // and the db data dir's absolute path will be used as the log file
 // name's prefix.
 // Default: empty
-func (opts *Options) SetDbLogDir(value string) {
+func (opts *Options) SetDBLogDir(value string) {
 	cvalue := C.CString(value)
 	defer C.free(unsafe.Pointer(cvalue))
 	C.rocksdb_options_set_db_log_dir(opts.c, cvalue)

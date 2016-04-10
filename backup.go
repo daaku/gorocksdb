@@ -124,14 +124,14 @@ func (b *BackupEngine) GetInfo() *BackupEngineInfo {
 // is where the write ahead logs are restored to and usually the same as dbDir.
 func (b *BackupEngine) RestoreDBFromLatestBackup(dbDir, walDir string, ro *RestoreOptions) error {
 	var cErr *C.char
-	cDbDir := C.CString(dbDir)
+	cDBDir := C.CString(dbDir)
 	cWalDir := C.CString(walDir)
 	defer func() {
-		C.free(unsafe.Pointer(cDbDir))
+		C.free(unsafe.Pointer(cDBDir))
 		C.free(unsafe.Pointer(cWalDir))
 	}()
 
-	C.rocksdb_backup_engine_restore_db_from_latest_backup(b.c, cDbDir, cWalDir, ro.c, &cErr)
+	C.rocksdb_backup_engine_restore_db_from_latest_backup(b.c, cDBDir, cWalDir, ro.c, &cErr)
 	if cErr != nil {
 		defer C.free(unsafe.Pointer(cErr))
 		return errors.New(C.GoString(cErr))

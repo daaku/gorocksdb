@@ -1,14 +1,14 @@
 /*
 Package gorocksdb provides the ability to create and access RocksDB databases.
 
-gorocksdb.OpenDb opens and creates databases.
+gorocksdb.OpenDB opens and creates databases.
 
 	opts := gorocksdb.NewDefaultOptions()
 	opts.SetBlockCache(gorocksdb.NewLRUCache(3<<30))
 	opts.SetCreateIfMissing(true)
-	db, err := gorocksdb.OpenDb(opts, "/path/to/db")
+	db, err := gorocksdb.OpenDB(opts, "/path/to/db")
 
-The DB struct returned by OpenDb provides DB.Get, DB.Put, DB.Merge and DB.Delete to modify
+The DB struct returned by OpenDB provides DB.Get, DB.Put, DB.Merge and DB.Delete to modify
 and query the database.
 
 	ro := gorocksdb.NewDefaultReadOptions()
@@ -58,7 +58,7 @@ your database.
 
 	filter := gorocksdb.NewBloomFilter(10)
 	opts.SetFilterPolicy(filter)
-	db, err := gorocksdb.OpenDb(opts, "/path/to/db")
+	db, err := gorocksdb.OpenDB(opts, "/path/to/db")
 
 If you're using a custom comparator in your code, be aware you may have to
 make your own filter policy object.

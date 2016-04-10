@@ -7,8 +7,8 @@ import (
 	"github.com/facebookgo/ensure"
 )
 
-func TestOpenDb(t *testing.T) {
-	db := newTestDB(t, "TestOpenDb", nil)
+func TestOpenDB(t *testing.T) {
+	db := newTestDB(t, "TestOpenDB", nil)
 	defer db.Close()
 }
 
@@ -56,7 +56,7 @@ func newTestDB(t *testing.T, name string, applyOpts func(opts *Options)) *DB {
 	if applyOpts != nil {
 		applyOpts(opts)
 	}
-	db, err := OpenDb(opts, dir)
+	db, err := OpenDB(opts, dir)
 	ensure.Nil(t, err)
 
 	return db
