@@ -224,25 +224,6 @@ func (db *DB) Get(opts *ReadOptions, key []byte) (*Slice, error) {
 	return newSlice(cValue, cValLen), nil
 }
 
-// GetBytes is like Get but returns a copy of the data.
-func (db *DB) GetBytes(opts *ReadOptions, key []byte) ([]byte, error) {
-	var (
-		cErr    *C.char
-		cValLen C.size_t
-		cKey    = byteToChar(key)
-	)
-	cValue := C.rocksdb_get(db.c, opts.c, cKey, C.size_t(len(key)), &cValLen, &cErr)
-	if cErr != nil {
-		defer C.free(unsafe.Pointer(cErr))
-		return nil, errors.New(C.GoString(cErr))
-	}
-	if cValue == nil {
-		return nil, nil
-	}
-	defer C.free(unsafe.Pointer(cValue))
-	return C.GoBytes(unsafe.Pointer(cValue), C.int(cValLen)), nil
-}
-
 // GetCF returns the data associated with the key from the database and column family.
 func (db *DB) GetCF(opts *ReadOptions, cf *ColumnFamilyHandle, key []byte) (*Slice, error) {
 	var (
