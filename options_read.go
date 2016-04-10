@@ -38,32 +38,32 @@ func newNativeReadOptions(c *C.rocksdb_readoptions_t) *ReadOptions {
 // SetVerifyChecksums speciy if all data read from underlying storage will be
 // verified against corresponding checksums.
 // Default: false
-func (opts *ReadOptions) SetVerifyChecksums(value bool) {
-	C.rocksdb_readoptions_set_verify_checksums(opts.c, boolToChar(value))
+func (o *ReadOptions) SetVerifyChecksums(value bool) {
+	C.rocksdb_readoptions_set_verify_checksums(o.c, boolToChar(value))
 }
 
 // SetFillCache specify whether the "data block"/"index block"/"filter block"
 // read for this iteration should be cached in memory?
 // Callers may wish to set this field to false for bulk scans.
 // Default: true
-func (opts *ReadOptions) SetFillCache(value bool) {
-	C.rocksdb_readoptions_set_fill_cache(opts.c, boolToChar(value))
+func (o *ReadOptions) SetFillCache(value bool) {
+	C.rocksdb_readoptions_set_fill_cache(o.c, boolToChar(value))
 }
 
 // SetSnapshot sets the snapshot which should be used for the read.
 // The snapshot must belong to the DB that is being read and must
 // not have been released.
 // Default: nil
-func (opts *ReadOptions) SetSnapshot(snap *Snapshot) {
-	C.rocksdb_readoptions_set_snapshot(opts.c, snap.c)
+func (o *ReadOptions) SetSnapshot(snap *Snapshot) {
+	C.rocksdb_readoptions_set_snapshot(o.c, snap.c)
 }
 
 // SetReadTier specify if this read request should process data that ALREADY
 // resides on a particular cache. If the required data is not
 // found at the specified cache, then Status::Incomplete is returned.
 // Default: ReadAllTier
-func (opts *ReadOptions) SetReadTier(value ReadTier) {
-	C.rocksdb_readoptions_set_read_tier(opts.c, C.int(value))
+func (o *ReadOptions) SetReadTier(value ReadTier) {
+	C.rocksdb_readoptions_set_read_tier(o.c, C.int(value))
 }
 
 // SetTailing specify if to create a tailing iterator.
@@ -72,12 +72,12 @@ func (opts *ReadOptions) SetReadTier(value ReadTier) {
 // is optimized for sequential reads. It will return records
 // that were inserted into the database after the creation of the iterator.
 // Default: false
-func (opts *ReadOptions) SetTailing(value bool) {
-	C.rocksdb_readoptions_set_tailing(opts.c, boolToChar(value))
+func (o *ReadOptions) SetTailing(value bool) {
+	C.rocksdb_readoptions_set_tailing(o.c, boolToChar(value))
 }
 
 // Destroy deallocates the ReadOptions object.
-func (opts *ReadOptions) Destroy() {
-	C.rocksdb_readoptions_destroy(opts.c)
-	opts.c = nil
+func (o *ReadOptions) Destroy() {
+	C.rocksdb_readoptions_destroy(o.c)
+	o.c = nil
 }

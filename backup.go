@@ -64,13 +64,13 @@ func NewRestoreOptions() *RestoreOptions {
 // If true, restore won't overwrite the existing log files in wal_dir. It will
 // also move all log files from archive directory to wal_dir.
 // By default, this is false.
-func (ro *RestoreOptions) SetKeepLogFiles(v int) {
-	C.rocksdb_restore_options_set_keep_log_files(ro.c, C.int(v))
+func (o *RestoreOptions) SetKeepLogFiles(v int) {
+	C.rocksdb_restore_options_set_keep_log_files(o.c, C.int(v))
 }
 
 // Destroy destroys this RestoreOptions instance.
-func (ro *RestoreOptions) Destroy() {
-	C.rocksdb_restore_options_destroy(ro.c)
+func (o *RestoreOptions) Destroy() {
+	C.rocksdb_restore_options_destroy(o.c)
 }
 
 // BackupEngine is a reusable handle to a RocksDB Backup, created by

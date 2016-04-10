@@ -27,19 +27,19 @@ func newNativeEnv(c *C.rocksdb_env_t) *Env {
 // of a specific thread pool for this environment.
 // 'LOW' is the default pool.
 // Default: 1
-func (env *Env) SetBackgroundThreads(n int) {
-	C.rocksdb_env_set_background_threads(env.c, C.int(n))
+func (e *Env) SetBackgroundThreads(n int) {
+	C.rocksdb_env_set_background_threads(e.c, C.int(n))
 }
 
 // SetHighPriorityBackgroundThreads sets the size of the high priority
 // thread pool that can be used to prevent compactions from stalling
 // memtable flushes.
-func (env *Env) SetHighPriorityBackgroundThreads(n int) {
-	C.rocksdb_env_set_high_priority_background_threads(env.c, C.int(n))
+func (e *Env) SetHighPriorityBackgroundThreads(n int) {
+	C.rocksdb_env_set_high_priority_background_threads(e.c, C.int(n))
 }
 
 // Destroy deallocates the Env object.
-func (env *Env) Destroy() {
-	C.rocksdb_env_destroy(env.c)
-	env.c = nil
+func (e *Env) Destroy() {
+	C.rocksdb_env_destroy(e.c)
+	e.c = nil
 }
