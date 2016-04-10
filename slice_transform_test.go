@@ -10,7 +10,7 @@ func TestSliceTransform(t *testing.T) {
 	db := newTestDB(t, "TestSliceTransform", func(opts *Options) {
 		opts.SetPrefixExtractor(&testSliceTransform{})
 	})
-	defer db.Close()
+	defer db.Release()
 
 	wo := NewDefaultWriteOptions()
 	ensure.Nil(t, db.Put(wo, []byte("foo1"), []byte("foo")))
@@ -18,7 +18,7 @@ func TestSliceTransform(t *testing.T) {
 	ensure.Nil(t, db.Put(wo, []byte("bar1"), []byte("bar")))
 
 	iter := db.NewIterator(NewDefaultReadOptions())
-	defer iter.Close()
+	defer iter.Release()
 	prefix := []byte("foo")
 	numFound := 0
 	for iter.Seek(prefix); iter.ValidForPrefix(prefix); iter.Next() {
@@ -32,7 +32,7 @@ func TestFixedPrefixTransformOpen(t *testing.T) {
 	db := newTestDB(t, "TestFixedPrefixTransformOpen", func(opts *Options) {
 		opts.SetPrefixExtractor(NewFixedPrefixTransform(3))
 	})
-	defer db.Close()
+	defer db.Release()
 }
 
 type testSliceTransform struct {

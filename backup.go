@@ -150,9 +150,9 @@ func (b *BackupEngine) PurgeOldBackups(num uint) error {
 	return nil
 }
 
-// Close close the backup engine and cleans up state
+// Release close the backup engine and cleans up state
 // The backups already taken remain on storage.
-func (b *BackupEngine) Close() {
+func (b *BackupEngine) Release() {
 	C.rocksdb_backup_engine_close(b.c)
 	b.c = nil
 }

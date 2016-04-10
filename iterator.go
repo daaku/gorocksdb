@@ -15,7 +15,7 @@ import (
 // For example:
 //
 //      it := db.NewIterator(readOpts)
-//      defer it.Close()
+//      defer it.Release()
 //
 //      it.Seek([]byte("foo"))
 //		for ; it.Valid(); it.Next() {
@@ -105,8 +105,8 @@ func (i *Iterator) Err() error {
 	return nil
 }
 
-// Close closes the iterator.
-func (i *Iterator) Close() {
+// Release closes the iterator.
+func (i *Iterator) Release() {
 	C.rocksdb_iter_destroy(i.c)
 	i.c = nil
 }

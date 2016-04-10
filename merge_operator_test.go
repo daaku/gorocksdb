@@ -24,7 +24,7 @@ func TestMergeOperator(t *testing.T) {
 	db := newTestDB(t, "TestMergeOperator", func(opts *Options) {
 		opts.SetMergeOperator(merger)
 	})
-	defer db.Close()
+	defer db.Release()
 
 	wo := NewDefaultWriteOptions()
 	ensure.Nil(t, db.Put(wo, givenKey, givenVal1))

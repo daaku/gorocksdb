@@ -28,7 +28,7 @@ func TestCompactionFilter(t *testing.T) {
 			},
 		})
 	})
-	defer db.Close()
+	defer db.Release()
 
 	// insert the test keys
 	wo := NewDefaultWriteOptions()

@@ -752,9 +752,9 @@ func (o *Options) SetAllowMmapWrites(value bool) {
 	C.rocksdb_options_set_allow_mmap_writes(o.c, boolToChar(value))
 }
 
-// SetIsFdCloseOnExec enable/dsiable child process inherit open files.
+// SetIsFdReleaseOnExec enable/dsiable child process inherit open files.
 // Default: true
-func (o *Options) SetIsFdCloseOnExec(value bool) {
+func (o *Options) SetIsFdReleaseOnExec(value bool) {
 	C.rocksdb_options_set_is_fd_close_on_exec(o.c, boolToChar(value))
 }
 

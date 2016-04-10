@@ -11,7 +11,7 @@ func TestComparator(t *testing.T) {
 	db := newTestDB(t, "TestComparator", func(opts *Options) {
 		opts.SetComparator(&bytesReverseComparator{})
 	})
-	defer db.Close()
+	defer db.Release()
 
 	// insert keys
 	givenKeys := [][]byte{[]byte("key1"), []byte("key2"), []byte("key3")}
@@ -23,7 +23,7 @@ func TestComparator(t *testing.T) {
 	// create a iterator to collect the keys
 	ro := NewDefaultReadOptions()
 	iter := db.NewIterator(ro)
-	defer iter.Close()
+	defer iter.Release()
 
 	// we seek to the last key and iterate in reverse order
 	// to match given keys

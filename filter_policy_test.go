@@ -42,7 +42,7 @@ func TestFilterPolicy(t *testing.T) {
 		blockOpts.SetFilterPolicy(policy)
 		opts.SetBlockBasedTableFactory(blockOpts)
 	})
-	defer db.Close()
+	defer db.Release()
 
 	// insert keys
 	wo := NewDefaultWriteOptions()

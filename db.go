@@ -598,8 +598,8 @@ func (db *DB) DeleteFile(name string) {
 	C.rocksdb_delete_file(db.c, cName)
 }
 
-// Close closes the database.
-func (db *DB) Close() {
+// Release closes the database.
+func (db *DB) Release() {
 	C.rocksdb_close(db.c)
 }
 

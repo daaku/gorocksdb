@@ -9,12 +9,12 @@ import (
 
 func TestOpenDB(t *testing.T) {
 	db := newTestDB(t, "TestOpenDB", nil)
-	defer db.Close()
+	defer db.Release()
 }
 
 func TestDBCRUD(t *testing.T) {
 	db := newTestDB(t, "TestDBGet", nil)
-	defer db.Close()
+	defer db.Release()
 
 	var (
 		givenKey  = []byte("hello")

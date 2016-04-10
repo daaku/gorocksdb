@@ -8,7 +8,7 @@ import (
 
 func TestWriteBatch(t *testing.T) {
 	db := newTestDB(t, "TestWriteBatch", nil)
-	defer db.Close()
+	defer db.Release()
 
 	var (
 		givenKey1 = []byte("key1")
@@ -43,7 +43,7 @@ func TestWriteBatch(t *testing.T) {
 
 func TestWriteBatchIterator(t *testing.T) {
 	db := newTestDB(t, "TestWriteBatchIterator", nil)
-	defer db.Close()
+	defer db.Release()
 
 	var (
 		givenKey1 = []byte("key1")

@@ -8,7 +8,7 @@ import (
 
 func TestIterator(t *testing.T) {
 	db := newTestDB(t, "TestIterator", nil)
-	defer db.Close()
+	defer db.Release()
 
 	// insert keys
 	givenKeys := [][]byte{[]byte("key1"), []byte("key2"), []byte("key3")}
@@ -19,7 +19,7 @@ func TestIterator(t *testing.T) {
 
 	ro := NewDefaultReadOptions()
 	iter := db.NewIterator(ro)
-	defer iter.Close()
+	defer iter.Release()
 	var actualKeys [][]byte
 	for iter.SeekToFirst(); iter.Valid(); iter.Next() {
 		key := make([]byte, 4)
