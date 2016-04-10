@@ -13,6 +13,11 @@ func NewDefaultEnv() *Env {
 	return NewNativeEnv(C.rocksdb_create_default_env())
 }
 
+// NewMemEnv creates a memory backed environment.
+func NewMemEnv() *Env {
+	return NewNativeEnv(C.rocksdb_create_mem_env())
+}
+
 // NewNativeEnv creates a Environment object.
 func NewNativeEnv(c *C.rocksdb_env_t) *Env {
 	return &Env{c}
