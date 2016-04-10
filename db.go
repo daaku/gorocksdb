@@ -18,7 +18,6 @@ type Range struct {
 // DB is a reusable handle to a RocksDB database on disk, created by Open.
 type DB struct {
 	c    *C.rocksdb_t
-	name string
 	opts *Options
 }
 
@@ -34,7 +33,6 @@ func OpenDB(opts *Options, name string) (*DB, error) {
 		return nil, convertErr(cErr)
 	}
 	return &DB{
-		name: name,
 		c:    db,
 		opts: opts,
 	}, nil
@@ -52,7 +50,6 @@ func OpenDBForReadOnly(opts *Options, name string, errorIfLogFileExist bool) (*D
 		return nil, convertErr(cErr)
 	}
 	return &DB{
-		name: name,
 		c:    db,
 		opts: opts,
 	}, nil
@@ -110,7 +107,6 @@ func OpenDBCFs(
 	}
 
 	return &DB{
-		name: name,
 		c:    db,
 		opts: opts,
 	}, cfHandles, nil
@@ -171,7 +167,6 @@ func OpenDBForReadOnlyCFs(
 	}
 
 	return &DB{
-		name: name,
 		c:    db,
 		opts: opts,
 	}, cfHandles, nil
@@ -197,11 +192,6 @@ func ListCFs(opts *Options, name string) ([]string, error) {
 	}
 	C.rocksdb_list_column_families_destroy(cNames, cLen)
 	return names, nil
-}
-
-// Name returns the name of the database.
-func (db *DB) Name() string {
-	return db.name
 }
 
 // Get returns the data associated with the key from the database.
